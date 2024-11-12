@@ -18,29 +18,23 @@
             }
         }
 
-       stage("Test Security with SonarQube") {
-    steps {
-        script {
-            // Running SonarQube analysis within the SonarQube environment
-            withSonarQubeEnv('SonarQube') {  // 'SonarQube' is the name of the SonarQube instance in Jenkins
-                sh '''
-                    # Ensure PATH includes SonarScanner
-                    export PATH=/opt/sonar-scanner/bin:$PATH
-                    echo "Current PATH: $PATH"
-                    which sonar-scanner
-
-                    # Run SonarScanner
-                    sonar-scanner \
-                      -Dsonar.projectKey=Angular \
-                      -Dsonar.sources=. \
-                      -Dsonar.host.url=$SONAR_HOST_URL \
-                      -Dsonar.login=$SONAR_TOKEN
-                '''
+      stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool 'sonar-scanner'
+                    withSonarQubeEnv('SonarQube') {
+                        sh """
+                            ${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=Angular \
+                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.login=squ_03720bec86e889a86de054b32a602e106b2129ba \
+                            -Dsonar.sources=./app \
+                            "
+                        """
+                    }
+                }
             }
-        }
-    }
-}
-    
+        }    
 
        
 
