@@ -1,16 +1,8 @@
- pipeline {
+pipeline {
     agent any
 
-    environment {
-        // SonarQube server URL and token
-        SONAR_HOST_URL = 'http://localhost:9000'
-        SONAR_TOKEN = 'sqp_b1c84db3309bede3505a8c2409989ba8df7faf4d'
-        // Adding the SonarScanner path
-        PATH = "/opt/sonar-scanner/bin:$PATH"
-    }
-
     stages {
-        stage("Build Docker Imag") {
+        stage("Build Docker Image") {
             steps {
                 script {
                     sh 'docker build -t your-angular-app1 .'
@@ -18,7 +10,7 @@
             }
         }
 
-      stage('SonarQube Analysis') {
+        stage('SonarQube Analysis') {
             steps {
                 script {
                     def scannerHome = tool 'sonar-scanner'
@@ -28,15 +20,12 @@
                             -Dsonar.projectKey=Angular \
                             -Dsonar.host.url=http://localhost:9000 \
                             -Dsonar.login=squ_03720bec86e889a86de054b32a602e106b2129ba \
-                            -Dsonar.sources=./app \
-                            "
+                            -Dsonar.sources=./app
                         """
                     }
                 }
             }
-        }    
-
-       
+        }
 
         stage("Deploy Docker Container") {
             steps {
