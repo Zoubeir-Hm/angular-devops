@@ -20,7 +20,7 @@ pipeline {
                             -Dsonar.projectKey=Angular \
                             -Dsonar.host.url=http://localhost:9000 \
                             -Dsonar.login=squ_03720bec86e889a86de054b32a602e106b2129ba \
-                            -Dsonar.sources=./app
+                            -Dsonar.sources=. \
                         """
                     }
                 }
